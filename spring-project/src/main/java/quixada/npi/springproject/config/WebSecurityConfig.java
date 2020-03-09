@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
@@ -18,11 +20,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    
+    UserDetailsService userDetailsService; 
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+    
+    
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    	auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override
@@ -36,6 +44,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests()
                     .antMatchers(HttpMethod.POST, "/login").permitAll()
+                    .antMatchers(HttpMethod.POST, "/singup").permitAll()
+                    .antMatchers(HttpMethod.POST,"/usuarios").hasAuthority("Admin")
+                    .antMatchers(HttpMethod.DELETE,"/usuarios").hasAuthority("Admin")
+                    .antMatchers(HttpMethod.POST,"/curso").hasAuthority("Admin")
+                    .antMatchers(HttpMethod.DELETE,"/curso").hasAuthority("Admin")
                     .antMatchers("public/**/**").permitAll()
                     .antMatchers("/webjars/**").permitAll()
                     .antMatchers("/swagger-ui.html").permitAll()

@@ -55,7 +55,7 @@ public class CursoController {
     	}
     	catch(Exception e) {
     		return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).
-    				body(new StandardError(HttpStatus.IM_USED.value(), "already in use", e.getMessage(), "/usuarios"));
+    				body(new StandardError(HttpStatus.IM_USED.value(), "already in use", e.getMessage(), "/curso"));
     	}
     	
     }

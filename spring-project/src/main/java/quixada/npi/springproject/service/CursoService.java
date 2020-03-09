@@ -26,11 +26,12 @@ public class CursoService {
 	}
 
 	public Curso addCurso(Curso curso) throws Exception{
-		if(cursoRepository.findById(curso.getId())!=null)
+		if(cursoRepository.findBySigla(curso.getSigla())!=null)
 			throw new Exception("Course already exists");
 		cursoRepository.save(curso);
 		return curso;
 	}
+
 	public void deleteCurso(int id) throws Exception{
 		if(cursoRepository.existsById(id)) {
 			cursoRepository.deleteById(id);
@@ -43,6 +44,7 @@ public class CursoService {
 		if(cursoRepository.existsById(curso.getId())) {
 			cursoRepository.delete(curso);
 			cursoRepository.save(curso);
+			return;
 		}
 		throw new Exception("Course does not exists");
 	}

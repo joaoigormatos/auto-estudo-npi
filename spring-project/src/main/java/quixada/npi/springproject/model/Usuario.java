@@ -1,6 +1,7 @@
 package quixada.npi.springproject.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -32,8 +33,21 @@ public class Usuario implements UserDetails {
 	private String password;
 
 	
+	@ManyToOne
+	private Curso curso;
+	
+	
 	private boolean habilitado;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_roles",joinColumns = {@JoinColumn(name="id")},
+	inverseJoinColumns = {@JoinColumn(name="roleid")})
+	private List<Role> roles;
 
+	
+
+	
+	
 	public Usuario() {}
 
 	public Usuario (Integer id, String nome, String email) {
@@ -80,7 +94,7 @@ public class Usuario implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Collections.emptyList();
+		return this.roles;
 		//return this.papeis;
 	}
 	
@@ -114,8 +128,11 @@ public class Usuario implements UserDetails {
 		return this.habilitado;
 	}
 
-	public List<String> getRoles() {
-			return new ArrayList<String>();
+	public List<Role> getRoles() {
+			return this.roles;
+	}
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 	@Override
