@@ -36,23 +36,26 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	public Usuario addUser(Usuario usuario) throws Exception{
+		System.out.println(usuario.getEmail());
+		System.out.println(usuarioRepository.findByEmail(usuario.getEmail()));
+		
 		if(usuarioRepository.findByEmail(usuario.getEmail())!=null)
 			throw new Exception("User already exists");
 		
 		//Firt step is to encode the user password
 		usuario.setPassword(new BCryptPasswordEncoder().encode(usuario.getPassword()));
 		
-		List<Role> roles = new ArrayList<>();
 		Role role = new Role();
+		List<Role> roles= new ArrayList<>();
 		
 		//Set the authorities of the current user
-		role.setRole("Stutent");
-	
-		roles.add(role);
+		role.setId(2);
+		roles.add( role);
+		
 		usuario.setRoles(roles);
 		usuarioRepository.save(usuario);
-		return usuario;
 		
+		return usuario;
 	}
 	@Override
 	public void deleteUser(int id) throws Exception{

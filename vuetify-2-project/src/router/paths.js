@@ -23,11 +23,13 @@ export default [
 
     {
         path: '/logout',
-        meta: { breadcrumb: true },
+        
         name: 'Logout',
         beforeEnter (to, from, next) {
-            store.dispatch('auth/logout', false)
-        }
+            store.dispatch('auth/logout', true)
+            next('Login')
+        },
+        
     },
 
 ];

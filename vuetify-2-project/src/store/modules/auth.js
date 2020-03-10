@@ -51,6 +51,10 @@ const actions = {
             commit('SET_UNIDADE_LOTACAO', res.data)
         })
     },
+    logout(context){
+        context.commit('CLEAR_AUTH_DATA')
+        context.dispatch('removeToken')
+    }
 
 };
 

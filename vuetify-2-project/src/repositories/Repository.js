@@ -8,6 +8,7 @@ const baseURL = `${baseDomain}`;
 const instance = axios.create({
     baseURL
 });
+
 instance.interceptors.request.use(function (config) {
     if (store.getters["auth/isValidDateToken"]) {
         config.headers.Authorization = store.getters["auth/token"];

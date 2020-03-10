@@ -20,7 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    UserDetailsService userDetailsService; 
+    UserDetailsService userDetailsService;
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -47,6 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers(HttpMethod.POST, "/singup").permitAll()
                     .antMatchers(HttpMethod.POST,"/usuarios").hasAuthority("Admin")
                     .antMatchers(HttpMethod.DELETE,"/usuarios").hasAuthority("Admin")
+
                     .antMatchers(HttpMethod.POST,"/curso").hasAuthority("Admin")
                     .antMatchers(HttpMethod.DELETE,"/curso").hasAuthority("Admin")
                     .antMatchers("public/**/**").permitAll()
