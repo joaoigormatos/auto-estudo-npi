@@ -10,11 +10,18 @@ export default [
     {
         path: '/',
         name: 'Home',
-        component: Home
+        component: Home,
+        beforeEnter (to, from, next) {
+            if(!store.getters["auth/isAuthenticated"]){
+                next("Login")
+            }else{
+                next()
+            }
+        }
     },
     {
         path: '/login',
-        meta: {
+        meta: { 
             public: true,
         },
         props: true,

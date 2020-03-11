@@ -19,7 +19,6 @@ public class Usuario implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonIgnore
 	private Integer id;
 	
 	@NotEmpty
@@ -43,10 +42,6 @@ public class Usuario implements UserDetails {
 	@JoinTable(name = "user_roles",joinColumns = {@JoinColumn(name="id")},
 	inverseJoinColumns = {@JoinColumn(name="roleid")})
 	private List<Role> roles;
-
-	
-
-	
 	
 	public Usuario() {}
 

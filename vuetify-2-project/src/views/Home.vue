@@ -1,27 +1,70 @@
 <template>
   <div>
-
     <v-card-widget enableActions :title="'Página Inicial'">
-      <div slot="widget-header-action" >
-        
-          <!-- <template v-slot:activator="{ on }"  > -->
-             <v-btn @click="toggleAddDialog" color="green white--text" flat text>
-              <v-icon>mdi-plus</v-icon>
-              Add user
-             </v-btn>
-         <!-- </template> -->
-                <AddUser :dialog="addUserDialog" @dialogClose="toggleAddDialog" @addUserDialog="addUser"/>
-              
+      <div slot="widget-header-action">
+        <v-btn @click="toggle('addUserDialog')" color="green white--text" flat text>
+          <v-icon>mdi-plus</v-icon>Add user
+        </v-btn>
       </div>
       <div slot="widget-content">
         <v-row>
           <v-col cols="12">
-            <v-data-table
-                    :headers="headers"
-                    :items="usuarios"
-                    :items-per-page="5"
-                    class="elevation-1"
-            ></v-data-table>
+            <v-simple-table :dense="dense" :fixed-header="fixedHeader" :height="height">
+              <template v-slot:default>
+                <thead>
+                  <tr >
+                        <th v-for="header in headers" :key="header.text">{{header.text}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="usuario in usuarios" :key="usuario.name" class="text-left">
+                    <th >
+                      {{usuario.nome}}
+                    </th>
+                     <th >
+                      {{usuario.email}}
+                    </th>
+                    <th>
+                      <v-btn text>
+                        <v-icon @click="removeUserDialogToggle(usuario)" color="red darken-2" >
+                          mdi-close-circle
+                        </v-icon>
+                      </v-btn>
+                    </th>
+                    <th>
+                      <v-btn text>
+                        <v-icon @click="editUserDialogToggle(usuario)" color="blue darken-2" >
+                          mdi-pencil
+                        </v-icon>
+                      </v-btn>
+                    </th>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </v-col>
+          <v-col>
+            <AddUser
+              :dialog="addUserDialog"
+              @dialogClose="toggle('addUserDialog')"
+              @userAdded="getAllUsers"
+            />
+
+          <EditUser
+              :user="user"
+              :dialog="editUserDialog"
+              @dialogClose="toggle('editUserDialog')"
+              @userUpdated="getAllUsers"
+            />
+            <RemoveUser
+              :user="user"
+              :dialog="removeUserDialog"
+              @dialogClose="toggle('removeUserDialog')"
+              @userDeleted="getAllUsers"
+            />
+
+            
+
           </v-col>
         </v-row>
       </div>
@@ -32,54 +75,74 @@
 <script>
 // @ is an alias to /src
 import VCardWidget from "@/components/VWidget";
-import AddUser  from "@/components/UserCrudDialogs/AddUser";
+import AddUser from "@/components/UserCrudDialogs/AddUser";
+import EditUser from "@/components/UserCrudDialogs/EditUser"
+import RemoveUser from "@/components/UserCrudDialogs/RemoveUser"
 
-import {RepositoryFactory} from "@/repositories/RepositoryFactory";
+import { RepositoryFactory } from "@/repositories/RepositoryFactory";
 const usuarioRepo = RepositoryFactory.get("usuario");
 
 export default {
-  name: 'home',
+  name: "home",
   components: {
-    VCardWidget , AddUser},
+    VCardWidget,
+    AddUser,
+    EditUser,
+    RemoveUser
+  },
 
   data: () => ({
     headers: [
       {
-        text: 'Nome',
-        align: 'left',
-        value: 'nome',
+        text: "Nome",
+        value: "nome"
       },
-      { text: 'Email', value: 'email' },
-      {text:'Remove', value: 'add user'}
+      { text: "Email", value: "email" },
+      { text: "Remove", value: "remove" },
+      { text: "Edit", value: "edit" }
     ],
-    usuarios :[],
-    addUserDialog:false,
+    usuarios: [],
+    user:{},
+    addUserDialog: false,
+    editUserDialog: false,
+    removeUserDialog: false
   }),
 
   created() {
-    usuarioRepo.getAll().then(res => {
-      this.usuarios = res.data;
-    }).catch(console.error);
+    usuarioRepo
+      .getAll()
+      .then(res => {
+        this.usuarios = res.data;
+      })
+      .catch(console.error);
   },
 
-  computed: {
-
-  },
+  computed: {},
 
   methods: {
-      removeUser(){
-
-      },
-      editUser(){
-
-      },
-      addUser(){
-
-      },
-      toggleAddDialog(){
-        this.addUserDialog = !this.addUserDialog;
-      }
-
+    removeUser() {},
+    editUser() {},
+    addUser() {},
+    toggle(value) {
+      this[value] = !this[value];
+    },
+    editUserDialogToggle(user){
+      this.user = user
+      console.log(user)
+      this.editUserDialog = !this.editUserDialog
+    },removeUserDialogToggle(user){
+      this.user = user
+      this.removeUserDialog = !this.removeUserDialog
+    },
+    getAllUsers(){
+      usuarioRepo
+      .getAll()
+      .then(res => {
+        this.usuarios = res.data;
+      })
+      .catch(console.error);
     }
-}
+
+  }
+};
 </script>

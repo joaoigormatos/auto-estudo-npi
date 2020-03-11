@@ -4,7 +4,7 @@ const resource = "/usuarios";
 
 export default {
     getByAutenticacao() {
-        return Repository.get(`${resource}/usuario`);
+        return Repository.get(`${resource}`);
     },
 
     getAll() {
@@ -13,10 +13,10 @@ export default {
     addUser(user){
       return Repository.post(`${resource}`, user)
     },
-    removeUser(id){
-      return Repository.delete(`${resource}`,id)
+    removeUser(id){      
+      return Repository.delete("/usuarios" + "/"+id)
     },
-    updateUser(){
-      return Repository.put(`${resource}/${id}`)
+    updateUser({user,id}){
+      return Repository.put(`${resource}/${id}`,user)
     }
 }

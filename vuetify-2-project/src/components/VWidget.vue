@@ -8,11 +8,15 @@
             </v-toolbar>
             <v-divider v-if="enableHeader"></v-divider>
             <v-card-text :class="contentBg">
-                <slot name="widget-content"></slot>
+                <slot name="widget-content">
+
+                </slot>
+
             </v-card-text>
             <v-divider v-if="enableActions"></v-divider>
             <v-card-actions v-if="enableActions">
                 <slot name="widget-actions"></slot>
+
             </v-card-actions>
         </v-card>
     </div>
@@ -39,7 +43,7 @@
             },
             enableActions: {
                 type: Boolean,
-                default: false
+                default: true
             },
         },
         data() {

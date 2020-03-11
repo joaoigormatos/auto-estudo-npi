@@ -1,15 +1,14 @@
 <template>
-    <v-container>
-        <v-row align="center" justify="center" >
-         <v-dialog v-model="dialog" persistent >
-        <v-col cols="12" sm="8" md="4" flat>
-        <v-card flat >
-          <v-toolbar color="primary" dark flat>
-            <v-toolbar-title>Add user</v-toolbar-title>
+  <v-row justify="center">
+    <v-dialog v-model="dialog" persistent max-width="600px">
+      <v-card>
+         <v-toolbar color="primary" dark flat>
+            <v-toolbar-title class="text--center">Add User</v-toolbar-title>
           </v-toolbar>
           <v-form @submit.prevent="onSubmit" ref="form" lazy-validation v-model="valid">
             <v-card-text>
               <p class="error--text text-center">{{error}}</p>
+              
               <v-text-field
                 label="Email"
                 name="email"
@@ -41,49 +40,62 @@
               <v-select outlined :items="items" label="Enabled" small v-model="enabled"/>
             </v-card-text>
             <v-card-actions>  
-            <v-spacer />
-          <v-btn color="red darken-1" text @click="$emit('dialogClose')">Close</v-btn>
-          <v-btn color="green accent-4 white--text" text @click="$emit('addUserDialog')">Save</v-btn>
-
-
+             <v-spacer></v-spacer>
+            <v-btn color="red darken-3 white--text" text @click="closeDialog">Close</v-btn>
+            <v-btn color="blue darken-1 white--text" text @click="onSubmit">Save</v-btn>
             </v-card-actions>
           </v-form>
-        </v-card>
-      </v-col>
-        </v-dialog>
-    </v-row>
-    </v-container>
-    
+      </v-card>
+    </v-dialog>
+  </v-row>
 </template>
 <script>
+import { RepositoryFactory } from "@/repositories/RepositoryFactory";
+const usuarioRepo = RepositoryFactory.get("usuario");
+
 export default {
-    props:{
-        dialog:{
-            type:Boolean,
-            required:true
-        }
-    },
-     data: () => ({
+  props: {
+    dialog: {
+      type: Boolean,
+      required: true
+    }
+  },
+  data: () => ({
     valid: true,
-    loading: false,
     email: "",
     password: "",
     name: "",
-    enabled:"",
+    enabled: "",
     items: ["Online", "Offline"],
     error: "",
-    requiredRule: [v => !!v || "Campo obrigatório"],dialog:false
+    requiredRule: [v => !!v || "Campo obrigatório"],
+    dialog: false,
   }),
-     methods:{
-        addUser(){
+  methods: {
+        onSubmit() {
+      if (this.$refs.form.validate()) {
 
-        }
-        ,closeDialog(){ 
-            this.$emit('dialogClose')
-        }
+        const user = {}
+        user.email = this.email;
+        user.name = this.name;
+        user.password =  this.password;
+        user.enabled =  this.enabled;
+        
+  usuarioRepo
+      .addUser(user)
+      .then(res => {
+        this.closeDialog();
+        this.$emit('userAdded')
+      })
+      .catch(console.error);
+
+      }
+    },
+    closeDialog() {
+      this.$emit("dialogClose");
     }
-}
+  }
+};
 </script>
 <style scoped>
-
 </style>
