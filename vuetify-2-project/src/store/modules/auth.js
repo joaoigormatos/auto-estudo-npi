@@ -31,6 +31,21 @@ const actions = {
             .finally(() => resolve())
         })
     },
+    register ({commit, dispatch}, authData) {
+        return new Promise((resolve, reject) => {
+            axios.post('/singup', {
+                email: authData.email,
+                password: authData.password,
+                name:authData.name,
+                enabled:authData.enabled
+            }).then(res=>{
+                const registed = true
+                resolve(registed)
+            })
+            .catch(error => console.log(error))
+            .finally(() => resolve())
+        })
+    },
 
     updateToken({commit}, tokenData) {
         const date = new Date();
@@ -63,6 +78,7 @@ const getters = {
     isAuthenticated (state) {
         return state.token !== null
     },
+    
 
     token(state) {
         return state.token

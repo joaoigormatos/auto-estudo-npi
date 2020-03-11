@@ -3,18 +3,20 @@
         <v-row align="center" justify="center">
             <v-col cols="12" sm="8" md="4" >
                 <v-card class="elevation-12">
-                    <v-toolbar color="primary" dark flat>
-                        <v-toolbar-title>Login</v-toolbar-title>
+                    <v-toolbar  color="blue-grey darken-2" dark flat>
+                        <v-toolbar-title class="text-center">Login</v-toolbar-title>
                     </v-toolbar>
                     <v-form @submit.prevent="onSubmit" ref="form" lazy-validation v-model="valid">
                         <v-card-text>
                             <p class="error--text text-center">{{error}}</p>
                             <v-text-field label="Login" name="email" prepend-icon="person" type="text" v-model="email" required :rules="requiredRule"/>
                             <v-text-field id="password" label="Password" name="password" prepend-icon="lock" type="password" v-model="password" required :rules="requiredRule"/>
+                      
                         </v-card-text>
                         <v-card-actions>
-                            <v-spacer />
-                            <v-btn color="primary" type="submit" :loading="loading" large>Entrar</v-btn>
+                            <v-btn left  @click="registerPage" color="green accent-4 white--text">Singup</v-btn>
+                            <v-spacer/>
+                            <v-btn right color="indigo darken-3 white--text" type="submit" :loading="loading"  >Login</v-btn>
                         </v-card-actions>
                     </v-form>
                 </v-card>
@@ -25,9 +27,12 @@
 
 <script>
     import { mapGetters, mapState } from 'vuex'
-
+    import Register from './Register'
     export default {
         props: ["to", "invalidToken"],
+        components:{
+            Register
+        },
         data: () => ({
             valid: true,
             loading: false,
@@ -58,7 +63,11 @@
                 }
 
                 this.loading = false
+            },
+            registerPage(){
+                this.$router.push('/register')
             }
+            
         },
         computed: {
             ...mapState({
