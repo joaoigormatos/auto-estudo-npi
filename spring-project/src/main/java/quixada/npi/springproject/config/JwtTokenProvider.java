@@ -58,7 +58,7 @@ public class JwtTokenProvider {
 
     public String getUsername(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
-    }
+    } 		
 
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader("Authorization");

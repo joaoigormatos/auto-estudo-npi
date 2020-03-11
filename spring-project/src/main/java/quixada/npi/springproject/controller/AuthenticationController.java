@@ -42,6 +42,7 @@ public class AuthenticationController {
             String username = data.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
             Usuario usuario = usuarioRepository.findByEmail(username);
+            
             List<String> roleList = roles(usuario);
             
             String token = jwtTokenProvider.createToken(username,roleList);
