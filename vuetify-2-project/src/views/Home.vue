@@ -1,8 +1,17 @@
 <template>
   <div>
-    <v-card-widget enableActions :title="'Página Inicial'">
-      <div slot="widget-header-action">
 
+    <v-card-widget enableActions :title="'Página Inicial'">
+      <div slot="widget-header-action" >
+        
+          <!-- <template v-slot:activator="{ on }"  > -->
+             <v-btn @click="toggleAddDialog" color="green white--text" flat text>
+              <v-icon>mdi-plus</v-icon>
+              Add user
+             </v-btn>
+         <!-- </template> -->
+                <AddUser :dialog="addUserDialog" @dialogClose="toggleAddDialog" @addUserDialog="addUser"/>
+              
       </div>
       <div slot="widget-content">
         <v-row>
@@ -23,14 +32,15 @@
 <script>
 // @ is an alias to /src
 import VCardWidget from "@/components/VWidget";
+import AddUser  from "@/components/UserCrudDialogs/AddUser";
+
 import {RepositoryFactory} from "@/repositories/RepositoryFactory";
 const usuarioRepo = RepositoryFactory.get("usuario");
 
 export default {
   name: 'home',
   components: {
-    VCardWidget
-  },
+    VCardWidget , AddUser},
 
   data: () => ({
     headers: [
@@ -39,9 +49,11 @@ export default {
         align: 'left',
         value: 'nome',
       },
-      { text: 'Email', value: 'email' }
+      { text: 'Email', value: 'email' },
+      {text:'Remove', value: 'add user'}
     ],
-    usuarios :[]
+    usuarios :[],
+    addUserDialog:false,
   }),
 
   created() {
@@ -55,7 +67,19 @@ export default {
   },
 
   methods: {
+      removeUser(){
 
-  }
+      },
+      editUser(){
+
+      },
+      addUser(){
+
+      },
+      toggleAddDialog(){
+        this.addUserDialog = !this.addUserDialog;
+      }
+
+    }
 }
 </script>

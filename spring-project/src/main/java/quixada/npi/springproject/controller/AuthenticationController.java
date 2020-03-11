@@ -2,6 +2,7 @@ package quixada.npi.springproject.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,8 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import quixada.npi.springproject.config.JwtTokenProvider;
+import quixada.npi.springproject.dto.UserRegisterDTO;
+import quixada.npi.springproject.exception.StandardError;
 import quixada.npi.springproject.model.Usuario;
 import quixada.npi.springproject.repository.UsuarioRepository;
+import quixada.npi.springproject.service.UsuarioService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +38,9 @@ public class AuthenticationController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @PostMapping("/login")
     public ResponseEntity<Object> signin(@RequestBody AuthenticationRequest data) {
@@ -58,7 +65,20 @@ public class AuthenticationController {
             throw new BadCredentialsException("Usuário e/ou senha inválidos");
         }
     }
- 
+    @PostMapping("/singup")
+    public ResponseEntity<?> create(@RequestBody UserRegisterDTO userRegisterDTO) {
+        // check if the user exists
+        // as long as the users doesnot exist so then add the users
+        try {
+            Usuario usuario = userRegisterDTO.toUser();
+            return ResponseEntity.ok(usuarioService.addUser(usuario));
+        }
+        catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).
+                    body(new StandardError(HttpStatus.IM_USED.value(), "already in use", e.getMessage(), "/usuarios"));
+        }
+
+    }
 
    private List<String> roles(UserDetails userDetails){
 	   List<String> auxRoles = new ArrayList<>();

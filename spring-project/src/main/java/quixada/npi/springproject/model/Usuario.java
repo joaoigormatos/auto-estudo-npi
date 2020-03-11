@@ -56,6 +56,13 @@ public class Usuario implements UserDetails {
 		this.email = email;
 	}
 
+	public Usuario(String nome,String email,String password, boolean enabled){
+		this.nome = nome;
+		this.email = email;
+		this.password = password;
+		this.habilitado = enabled;
+	}
+
 	public Integer getId() {
 		return id;
 	}

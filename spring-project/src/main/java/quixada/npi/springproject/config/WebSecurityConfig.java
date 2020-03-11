@@ -50,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                     .antMatchers(HttpMethod.POST,"/curso").hasAuthority("Admin")
                     .antMatchers(HttpMethod.DELETE,"/curso").hasAuthority("Admin")
+
                     .antMatchers("public/**/**").permitAll()
                     .antMatchers("/webjars/**").permitAll()
                     .antMatchers("/swagger-ui.html").permitAll()
