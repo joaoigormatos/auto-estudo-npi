@@ -7,7 +7,7 @@ const state = {
     tokenExpirado: false,
     permissoes: null,
     unidadeLotacao: null,
-    username:''
+    username:localStorage.getItem("nome")
 };
 
 // actions
@@ -25,7 +25,7 @@ const actions = {
                 localStorage.setItem('token_update_date', date);
                 localStorage.setItem('nome', res.data.username);
                 
-                commit('AUTHENTICATE', {token: res.data.token, date,username:res.data.username });
+                commit('AUTHENTICATE', {token: res.data.token, data:date,username:res.data.username });
             })
             .catch(error => console.log(error))
             .finally(() => resolve())

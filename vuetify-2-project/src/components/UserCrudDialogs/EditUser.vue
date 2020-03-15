@@ -13,7 +13,7 @@
                 name="email"
                 prepend-icon="person"
                 type="text"
-                v-model="user.email"
+                v-model="email"
                 required
                 :rules="requiredRule"
               />
@@ -22,7 +22,7 @@
                 name="name"
                 prepend-icon="mdi-account-outline"
                 type="text"
-                v-model="user.nome"
+                v-model="name"
                 required
                 :rules="requiredRule"
               />
@@ -32,7 +32,7 @@
                 name="password"
                 prepend-icon="lock"
                 type="password"
-                v-model="user.password"
+                v-model="password"
                 required
                 :rules="requiredRule"
               />
@@ -61,18 +61,19 @@ export default {
         required:true
     }
   },
-  data: () => ({
-    valid: true,
-    loading: false,
-    email: this.user.email,
-    password: this.user.password,
-    name: this.user.name,
-    enabled: this.user.enabled,
-    items: ["Online", "Offline"],
-    error: "",
-    requiredRule: [v => !!v || "Campo obrigatório"],
-    dialog: false
-  }),
+  data(){
+      return {
+          valid: true,
+          loading: false,
+          email: this.user.email,
+          password: this.user.password,
+          name: this.user.nome,
+          enabled: this.user.habilitado,
+          items: ["Online", "Offline"],
+          error: "",
+          requiredRule: [v => !!v || "Campo obrigatório"],
+      }
+  },
   methods: {
     addUser() {},
     closeDialog() {

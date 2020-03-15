@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <v-card-widget enableActions :title="'Página Inicial'">
             <div slot="widget-header-action">
 

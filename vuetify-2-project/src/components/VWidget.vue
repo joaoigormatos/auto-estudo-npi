@@ -1,7 +1,7 @@
 <template>
     <div id="v-card-widget">
         <v-card outlined>
-            <v-toolbar :dark="dark" :color="color" dense flat v-if="enableHeader">
+            <v-toolbar :dark="dark" :color="color" dense  v-if="enableHeader">
                 <v-toolbar-title><span class="title font-weight-medium">{{title}}</span></v-toolbar-title>
                 <v-spacer></v-spacer>
                 <slot name="widget-header-action"></slot>

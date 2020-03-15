@@ -60,17 +60,18 @@ export default {
       required: true
     }
   },
-  data: () => ({
-    valid: true,
-    email: "",
-    password: "",
-    name: "",
-    enabled: "",
-    items: ["Online", "Offline"],
-    error: "",
-    requiredRule: [v => !!v || "Campo obrigatório"],
-    dialog: false,
-  }),
+  data(){
+   return{
+       valid: true,
+       email: "",
+       password: "",
+       name: "",
+       enabled: "",
+       items: ["Online", "Offline"],
+       error: "",
+       requiredRule: [v => !!v || "Campo obrigatório"],
+   }
+  },
   methods: {
         onSubmit() {
       if (this.$refs.form.validate()) {
