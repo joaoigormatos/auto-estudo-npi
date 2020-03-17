@@ -3,7 +3,7 @@
     <v-card-widget enableActions :title="'Cursos'">
       <div slot="widget-header-action">
         <v-btn @click="toggle('addUserDialog')" color="green white--text"  text>
-          <v-icon>mdi-plus</v-icon>Add user
+          <v-icon>mdi-plus</v-icon>Add Course
         </v-btn>
       </div>
       <div slot="widget-content">
@@ -17,23 +17,23 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="usuario in usuarios" :key="usuario.name" class="text-left">
+                  <tr v-for="course in courses" :key="course.name" class="text-left">
                     <th >
-                      {{usuario.nome}}
+                      {{course.nome}}
                     </th>
                      <th >
-                      {{usuario.email}}
+                      {{course.email}}
                     </th>
                     <th>
                       <v-btn text>
-                        <v-icon @click="removeUserDialogToggle(usuario)" color="red darken-2" >
+                        <v-icon @click="removeUserDialogToggle(course)" color="red darken-2" >
                           mdi-close-circle
                         </v-icon>
                       </v-btn>
                     </th>
                     <th>
                       <v-btn text>
-                        <v-icon @click="editUserDialogToggle(usuario)" color="blue darken-2" >
+                        <v-icon @click="editUserDialogToggle(course)" color="blue darken-2" >
                           mdi-pencil
                         </v-icon>
                       </v-btn>
@@ -44,7 +44,7 @@
             </v-simple-table>
           </v-col>
           <v-col>
-            <AddUser
+            <!-- <AddUser
               :dialog="addUserDialog"
               @dialogClose="toggle('addUserDialog')"
               @userAdded="getAllUsers"
@@ -61,7 +61,7 @@
               :dialog="removeUserDialog"
               @dialogClose="toggle('removeUserDialog')"
               @userDeleted="getAllUsers"
-            />
+            /> -->
 
             
 
@@ -75,20 +75,22 @@
 <script>
 // @ is an alias to /src
 import VCardWidget from "@/components/VWidget";
-import AddUser from "@/components/UserCrudDialogs/AddUser";
-import EditUser from "@/components/UserCrudDialogs/EditUser"
-import RemoveUser from "@/components/UserCrudDialogs/RemoveUser"
+
+// import AddUser from "@/components/UserCrudDialogs/AddUser";
+// import EditUser from "@/components/UserCrudDialogs/EditUser"
+// import RemoveUser from "@/components/UserCrudDialogs/RemoveUser"
 
 import { RepositoryFactory } from "@/repositories/RepositoryFactory";
-const usuarioRepo = RepositoryFactory.get("usuario");
+//Refactor this line
+const courseRepo = RepositoryFactory.get("courses");
 
 export default {
   name: "home",
   components: {
     VCardWidget,
-    AddUser,
-    EditUser,
-    RemoveUser
+    // AddUser,
+    // EditUser,
+    // RemoveUser
   },
 
   data: () => ({
@@ -97,22 +99,23 @@ export default {
         text: "Nome",
         value: "nome"
       },
-      { text: "Email", value: "email" },
+      { text: "Sigla", value: "sigla" },
+      { text: "Turno", value: "turno" },
       { text: "Remove", value: "remove" },
       { text: "Edit", value: "edit" }
     ],
-    usuarios: [],
-    user:{},
-    addUserDialog: false,
-    editUserDialog: false,
-    removeUserDialog: false
+    courses: [],
+    currentCourse:{},
+    addCourseDialog: false,
+    editCourseDialog: false,
+    removeCourseDialog: false
   }),
 
   created() {
-    usuarioRepo
+    courseRepo
       .getAll()
       .then(res => {
-        this.usuarios = res.data;
+        this.courses = res.data;
       })
       .catch(console.error);
   },
@@ -120,25 +123,25 @@ export default {
   computed: {},
 
   methods: {
-    removeUser() {},
-    editUser() {},
-    addUser() {},
+    removeCourse() {},
+    editCourse() {},
+    addCourse() {},
     toggle(value) {
       this[value] = !this[value];
     },
     editUserDialogToggle(user){
       this.user = user
       console.log(user)
-      this.editUserDialog = !this.editUserDialog
+      this.editCourseDialog = !this.editUserDialog
     },removeUserDialogToggle(user){
       this.user = user
-      this.removeUserDialog = !this.removeUserDialog
+      this.removeCourseDialog = !this.removeUserDialog
     },
     getAllUsers(){
-      usuarioRepo
+      courseRepo
       .getAll()
       .then(res => {
-        this.usuarios = res.data;
+        this.courses = res.data;
       })
       .catch(console.error);
     }

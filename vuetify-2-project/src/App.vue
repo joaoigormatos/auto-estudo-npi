@@ -15,8 +15,13 @@
         <v-toolbar-items class="ml-3">
           <v-btn to="/" text>Início</v-btn>
         </v-toolbar-items>
-
+        
+        <v-toolbar-items class="ml-3">
+          <v-btn to="/courses"  text>Courses</v-btn>
+        </v-toolbar-items>
         <v-spacer></v-spacer>
+
+
 
         <span>Olá, {{username}}</span>
         <router-link :to="{path: '/logout',name:'Logout'}">

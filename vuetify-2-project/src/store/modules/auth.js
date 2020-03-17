@@ -7,7 +7,7 @@ const state = {
     tokenExpirado: false,
     permissoes: null,
     unidadeLotacao: null,
-    username:localStorage.getItem("nome")
+    username:localStorage.getItem('nome')
 };
 
 // actions
@@ -25,22 +25,7 @@ const actions = {
                 localStorage.setItem('token_update_date', date);
                 localStorage.setItem('nome', res.data.username);
                 
-                commit('AUTHENTICATE', {token: res.data.token, data:date,username:res.data.username });
-            })
-            .catch(error => console.log(error))
-            .finally(() => resolve())
-        })
-    },
-    register ({commit, dispatch}, authData) {
-        return new Promise((resolve, reject) => {
-            axios.post('/singup', {
-                email: authData.email,
-                password: authData.password,
-                name:authData.name,
-                enabled:authData.enabled
-            }).then(res=>{
-                const registed = true
-                resolve(registed)
+                commit('AUTHENTICATE', {token: res.data.token, date,username:res.data.username });
             })
             .catch(error => console.log(error))
             .finally(() => resolve())
@@ -66,10 +51,6 @@ const actions = {
             commit('SET_UNIDADE_LOTACAO', res.data)
         })
     },
-    logout(context){
-        context.commit('CLEAR_AUTH_DATA')
-        context.dispatch('removeToken')
-    }
 
 };
 
@@ -78,7 +59,6 @@ const getters = {
     isAuthenticated (state) {
         return state.token !== null
     },
-    
 
     token(state) {
         return state.token

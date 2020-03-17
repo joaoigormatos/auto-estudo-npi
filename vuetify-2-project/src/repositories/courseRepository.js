@@ -1,12 +1,11 @@
 import Repository from "./Repository";
 
-const resource = "/course";
+const resource = "/curso"; 
 
 export default {
-    getByAutenticacao(id) {
-        return Repository.get(`${resource}/${id}`);
-    },
-
+  getByAutenticacao() {
+    return Repository.get(`${resource}`);
+},
     getAll() {
       return Repository.get(`${resource}`)
     },

@@ -2,6 +2,7 @@ import store from '../store'
 import LoginPage from '../views/Login'
 import RegisterPage from '../views/Register'
 import Home from '../views/Stutents'
+import Courses from '../views/Courses'
 
 export default [
 
@@ -45,6 +46,10 @@ export default [
             next('Login')
         },
         
+    },{
+        path:'/courses',
+        name:'Courses',
+        component:Courses
     },
 
 ];

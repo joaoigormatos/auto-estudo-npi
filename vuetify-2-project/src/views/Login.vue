@@ -61,13 +61,11 @@
                             }
                         })
                 }
-
                 this.loading = false
             },
             registerPage(){
                 this.$router.push('/register')
             }
-            
         },
         computed: {
             ...mapState({
